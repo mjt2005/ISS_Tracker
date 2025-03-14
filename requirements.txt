@@ -1,0 +1,9 @@
+Flask==3.0.2
+redis==5.2.1
+requests==2.31.0
+xmltodict==0.14.2
+numpy==2.2.2
+datetime==5.5
+pytest==8.3.4
+astropy==7.0.1
+geopy==2.4.1
