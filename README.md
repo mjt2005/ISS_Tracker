@@ -25,7 +25,7 @@ The following folder contains a python script, iss_tracker_app.py, for tracking 
 ![diagram](./ISS_Tracker_SoftwareDiagram.jpg)
 
 ## Use of AI/ Outside Resources:
-AI was used for the following lines in iss_app.py:
+AI was used for the following lines in iss_tracker_app.py:
 1. current_time = datetime.now(timezone.utc).replace(microsecond=0, tzinfo=None)
 - I used ChatGPT to help debug an error where 2 datetime objects could not be subtracted because one was time-zone naive and the other was not. Because I hard-coded everything to be in UTC time, ChatGPT produced the last argument in the .replace() function to get rid of time zone info. I also used ChatGPT to produce the test_closest_to_now function because I felt it would take too long to do my hand, and I could not think of a good unit test for that function.
 2. pattern = r'^\d{4}-\d{3}T\d{2}:\d{2}:\d{2}\.\d{3}Z$' 
