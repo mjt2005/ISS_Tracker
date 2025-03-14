@@ -6,23 +6,23 @@ The following folder contains a python script, iss_tracker_app.py, for tracking 
 2. Since we will be storing back-up data locally, you will need to create a /data folder in your current directory by typing the command ```mkdir data```.
 3. Because the entire program is containerized, all you need to do to gain access to it is pull my public image from Dockerhub with the command ```docker pull mjt2005/iss_tracker_app:2.0```. Before we go any further, ensure that you have nothing running on port 5000 by running the command ```lsof -i :5000``` which should return nothing if it is free.
 4. Once my image is in your working directory, you can build it by typing the command ```docker compose build``` and then run it in the background with ```docker compose up -d```. While you will not be able to navigate around the container, that is not neccessary since we will be using Flask routes to run my programs.
-5. Upon starting, my program will fetch the ISS data from the NASA website and store it in a Redis database. If you exit the program and come back to it, it will not re-fetch the data because it has persisted in Redis.
+5. Upon starting, my program will fetch the ISS data from the NASA website and store it in a Redis database. It also stores the data locally in the /data folder every second. If you exit the program and come back to it, it will not re-fetch the data because it has persisted in Redis.
 6. To access my functions:
 
 | Command | Inputs | Output |
 |---------|--------|--------|
 | ```curl localhost:5000/epochs``` | None | All epochs in the dataset, formatted in XML |
-| ```curl 'localhost:5000/epochs_query?limit=<start>&<last>'``` | 'start' & 'last' - Day of the year bounds for the range of data requested | A subset of the dataset |
+| ```curl 'localhost:5000/epochs_query?limit=<start>&offset=<last>'``` | 'start' & 'last' - Day of the year bounds for the range of data requested | A subset of the dataset |
 | ```curl localhost:5000/epochs/<epoch>``` | 'epoch' - The epoch you wish to see, formatted as it is in the raw data | The state vectors for the epoch |
 | ```curl localhost:5000/epochs/<epoch>/speed``` | 'epoch' - The epoch you wish to see, formatted as it is in the raw data | The instantaneous speed in km/s of the ISS at that epoch |
 | ```curl localhost:5000/now``` | None | The current epoch, latitude, longitude, altitude, and geolocation of the ISS |
 | ```curl localhost:5000/epochs/<epoch>/location``` | The epoch you wish to see, formatted as it is in the raw data | The latitude, longitude, altitude, and geolocation of the ISS at that epoch |
-5. Note that the program will alert you if the epoch entered is not in the correct format (correct ex: '2025-060T05:49:00.000Z') or if the epoch entered is not in the current ephemeris (ex: something from 2024). Also, since the timestamp for each epoch in the data is formatted where the day represents the absolute day of the year (ex: February 1st is 32), by 'day of the year bounds' I mean the first and last days you wish to retrive data for. For example, start= 80 and last = 85 will give data for the 80th through 85th day of 2025. Remember that the data only contains information over a 15-day period.
-6. To run my pytests, simply type the command ```pytest``` in your working directory. All tests should pass
+5. Note that the program will alert you if the epoch entered is not in the correct format (correct ex: '2025-060T05:49:00.000Z') or if the epoch entered is not in the current ephemeris (ex: something from 2024). Also, since the timestamp for each epoch in the data is formatted where the day represents the absolute day of the year (ex: February 1st is 32), by 'day of the year bounds', I mean the first and last days you wish to retrive data for. For example, limit=80 and offset=85 will give data for the 80th through 85th day of 2025. Remember that the data only contains information over a 15-day period.
+6. To run my pytests, simply type the command ```pytest``` in your working directory. All tests should pass.
 
 ## Software Diagram
-- The following software diagram demonstrates how Docker strings together Flask and Redis to connect the data for use in web routes.
-![diagram](./ml_data_diagram1.jpg)
+- The following software diagram demonstrates how Docker strings together Flask and Redis to be able to retrieve cached data for use in my web routes.
+![diagram](./ISS_Tracker_SoftwareDiagram.jpg)
 
 ## Use of AI/ Outside Resources:
 AI was used for the following lines in iss_app.py:
