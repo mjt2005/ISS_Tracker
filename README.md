@@ -37,7 +37,6 @@ AI was used for the following lines in iss_app.py:
     }
     return Response(json.dumps(response_data), status=200, mimetype="application/json")
 - I used ChatGPT for this because I could not figure out how to return both a dictionary and a string in the route.
-4. regex_pattern = rf'2025-(0{start}|[5-9]\d|{start+1:02d}|{last:03d})T\d{{2}}:\d{{2}}:\d{{2}}\.\d{{3}}Z'
-    ...
+4. regex_pattern = rf'2025-(0{start}|[5-9]\d|{start+1:02d}|{last:03d})T\d{{2}}:\d{{2}}:\d{{2}}\.\d{{3}}Z' <br>
     valid_keys = [key.decode() for key in keys if re.fullmatch(regex_pattern, key.decode())] 
-    - I used ChatGPT for these lines because again, I am not familiar with the re library and I did not know how to populate a list of keys that matched the pattern.
+- I used ChatGPT for these lines because again, I am not familiar with the re library and I did not know how to populate a list of keys that matched the pattern.
